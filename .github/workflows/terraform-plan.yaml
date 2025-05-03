@@ -3,11 +3,14 @@ name: 'Terraform Plan'
 on:
   push:
     branches:
-      - '**'            # any branch
+      - '**'         
+    branches-ignore:
+      - main
   pull_request:
     branches:
-      - '**'            # any PR
-
+      - '**'   
+    branches-ignore:
+      - main
 jobs:
   plan:
     name: Terraform Plan

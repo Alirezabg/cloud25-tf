@@ -1,27 +1,24 @@
-name: 'Terraform Apply'
+# .github/workflows/terraform-apply.yml
+
+name: Terraform Validate & Apply
 
 on:
   push:
     branches:
       - main
 
-concurrency:
-  group: terraform-apply
-  cancel-in-progress: false
-
 jobs:
-  apply:
-    name: Terraform Apply
+  terraform:
+    name: Validate, Plan & Apply
     runs-on: ubuntu-latest
+    environment: production     # optional: gate with required reviewers
+    concurrency:
+      group: terraform-apply
+      cancel-in-progress: false
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download tfplan artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -35,11 +32,18 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region:            ${{ secrets.AWS_REGION }}
 
-      - name: Terraform Init
-        run: terraform init -reconfigure \
-               -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
-               -backend-config="key=${{ vars.TF_STATE_KEY }}" \
-               -backend-config="region=${{ secrets.AWS_REGION }}"
+      - name: Terraform Init (remote backend)
+        run: |
+          terraform init -reconfigure \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=${{ vars.TF_STATE_KEY }}" \
+            -backend-config="region=${{ secrets.AWS_REGION }}"
+
+      - name: Terraform Validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        run: terraform plan -no-color -out=tfplan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
