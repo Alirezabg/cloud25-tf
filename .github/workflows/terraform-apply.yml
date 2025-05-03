@@ -4,18 +4,22 @@ on:
   push:
     branches:
       - main         # or 'main'
+concurrency:
+  group: terraform-apply
+  cancel-in-progress: false
 
 jobs:
   apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
-    # Optional: require manual approval in GitHub Environments
-    environment: production
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      - name: Download tfplan artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: tfplan
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
