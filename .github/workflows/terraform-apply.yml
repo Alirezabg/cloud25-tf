@@ -1,64 +1,24 @@
-name: Terraform
+# .github/workflows/terraform-apply.yml
+
+name: Terraform Validate & Apply
 
 on:
-  # 1) On PRs against main, run validate+plan
-  pull_request:
-    branches:
-      - main
-
-  # 2) On merges to main, run apply
   push:
     branches:
       - main
 
 jobs:
-  validate_and_plan:
-    if: github.event_name == 'pull_request'
-    name: Terraform Validate & Plan
+  terraform:
+    name: Validate, Plan & Apply
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.6.0
-
-      - name: Terraform Init (no backend)
-        run: terraform init -backend=false
-
-      - name: Terraform Validate
-        run: terraform validate -no-color
-
-      - name: Terraform Plan
-        run: terraform plan -no-color -out=tfplan
-
-      - name: Upload Plan for Apply
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan
-          path: tfplan
-
-  apply:
-    if: github.event_name == 'push'
-    needs: validate_and_plan
-    name: Terraform Apply
-    runs-on: ubuntu-latest
-    environment: production
+    environment: production     # optional: gate with required reviewers
     concurrency:
       group: terraform-apply
       cancel-in-progress: false
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Download tfplan
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -73,10 +33,17 @@ jobs:
           aws-region:            ${{ secrets.AWS_REGION }}
 
       - name: Terraform Init (remote backend)
-        run: terraform init -reconfigure \
-               -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
-               -backend-config="key=${{ vars.TF_STATE_KEY }}" \
-               -backend-config="region=${{ secrets.AWS_REGION }}"
+        run: |
+          terraform init -reconfigure \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=${{ vars.TF_STATE_KEY }}" \
+            -backend-config="region=${{ secrets.AWS_REGION }}"
+
+      - name: Terraform Validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        run: terraform plan -no-color -out=tfplan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
