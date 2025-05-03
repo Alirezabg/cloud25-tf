@@ -3,7 +3,8 @@ name: 'Terraform Apply'
 on:
   push:
     branches:
-      - main         # or 'main'
+      - main
+
 concurrency:
   group: terraform-apply
   cancel-in-progress: false
@@ -16,10 +17,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Download tfplan artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: tfplan
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -28,15 +31,15 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region:        ${{ secrets.AWS_REGION }}
+          aws-region:            ${{ secrets.AWS_REGION }}
 
       - name: Terraform Init
         run: terraform init -reconfigure \
                -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
                -backend-config="key=${{ vars.TF_STATE_KEY }}" \
-               -backend-config="region=${{ secrets.AWS_REGION }}" 
+               -backend-config="region=${{ secrets.AWS_REGION }}"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
