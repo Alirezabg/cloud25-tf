@@ -1,4 +1,4 @@
-module "your_vpc" {
+module "cloud_vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.0.0"     # pick a recent compatible version
 
@@ -12,8 +12,4 @@ module "your_vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
 }

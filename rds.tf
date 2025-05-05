@@ -1,5 +1,5 @@
 module "rds" {
-  source      = "./modules/rds_free_tier"
+  source      = "./modules/rds"
   identifier  = var.identifier
   db_username = var.db_username
   db_password = var.db_password
@@ -8,10 +8,7 @@ module "rds" {
 output "rds_endpoint" {
   value = module.rds.endpoint
 }
-```
 
-# root/variables.tf
-```hcl
 variable "aws_region" {
   description = "AWS region for RDS"
   type        = string
