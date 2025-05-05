@@ -5,5 +5,5 @@ module "react_frontend" {
 }
 
 output "frontend_url"{
-    value module.react_frontend.website_endpoint
+    value = module.react_frontend.website_endpoint
 }
