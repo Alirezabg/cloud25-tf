@@ -29,9 +29,9 @@ data "aws_iam_policy_document" "public_read" {
         effect ="Allow"
         principals {
             type = "AWS"
-            indetifiers =["*"]
+            identifiers  =["*"]
         }
-        action = ["s3:GetObject"]
+        actions = ["s3:GetObject"]
         resources = ["${aws_s3_bucket.this.arn}/*"]
     }
 }
