@@ -19,6 +19,6 @@ variable "instance_type" {
     default = "t2.micro"
 }
 
-variable "allowed_ssh_cide" {
+variable "allowed_ssh_cidr" {
     type = string
 }
