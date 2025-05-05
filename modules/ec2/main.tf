@@ -1,12 +1,12 @@
 resource "aws_security_group" "this"{
-    name = "ec2-backend
+    name = "ec2-backend"
     vpc_id = var.vpc_id
 
     ingress {
         from_port = 22
         to_port = 22
         protocol = "tcp"
-        cidr_block = [var.allowed_ssh_cide]
+        cidr_blocks = [var.allowed_ssh_cidr]
     }
      ingress {
     from_port   = 80
