@@ -6,9 +6,6 @@ variable "subnet_id"{
     type = string
 }
 
-variable "prefix_list_id"{
-    type = string
-}
 
 variable "key_name" {
     type = string
