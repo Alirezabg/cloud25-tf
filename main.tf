@@ -1,5 +1,5 @@
 module "react_frontend" {
-    source ="./module/s3-website"
+    source ="./modules/s3-website"
     bucket_name = "alireza-cyf-react-app"
 
 }
