@@ -14,12 +14,6 @@ resource "aws_security_group" "this"{
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-    egress{
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        prefix_list_id = [var.prefix_list_id]
-    }
 }
 
 data "aws_ami" "amazon_linux"{
