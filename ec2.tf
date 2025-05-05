@@ -5,7 +5,7 @@ module "ec2_backend" {
   prefix_list_id    = var.prefix_list_id
   key_name          = var.key_name
   instance_type     = var.instance_type
-  allowed_ssh_cidr  = var.allowed_ssh_cidr
+  allowed_ssh_cidr  = var.SSH_CIDR
 }
 
 variable "prefix_list_id" {
