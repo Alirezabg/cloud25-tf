@@ -1,6 +1,4 @@
 name: 'Terraform Validate'
-
-# Run on any PR against any branch
 on:
   pull_request:
     branches:
