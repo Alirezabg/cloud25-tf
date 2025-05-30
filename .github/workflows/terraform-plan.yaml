@@ -3,12 +3,15 @@ name: 'Terraform Plan'
 on:
   push:
     branches:
-      - '**'            # any branch
+      - '**'    
+      - '!destroy'     
   pull_request:
     branches:
-      - '**'            # any PR
+      - '**'   
+      - '!destroy'     
 
 jobs:
+  
   plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
@@ -40,7 +43,6 @@ jobs:
         id: plan
         run: terraform plan -no-color -out=tfplan
 
-      # (Optional) Comment plan output on PR
       - name: Comment Plan on PR
         if: github.event_name == 'pull_request'
         uses: marocchino/sticky-pull-request-comment@v2

@@ -3,13 +3,12 @@ name: 'Terraform Apply'
 on:
   push:
     branches:
-      - main         # or 'main'
+      - main        
 
 jobs:
   apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
-    # Optional: require manual approval in GitHub Environments
     environment: production
 
     steps:
@@ -35,4 +34,4 @@ jobs:
                -backend-config="region=${{ secrets.AWS_REGION }}" 
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve
