@@ -10,6 +10,7 @@ on:
       - '**'   
       - '!main'  
 jobs:
+  
   plan:
     name: Terraform Plan
     runs-on: ubuntu-latest
