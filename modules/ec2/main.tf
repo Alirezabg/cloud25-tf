@@ -42,18 +42,3 @@ resource "aws_instance" "this"{
     }
 }
 
-resource "random_password" "app_password" {
-  length  = 16
-  special = true
-}
-resource "aws_secretsmanager_secret" "ec2_app_secret" {
-  name = "ec2-backend-app-secret"
-}
-
-resource "aws_secretsmanager_secret_version" "ec2_app_secret_version" {
-  secret_id     = aws_secretsmanager_secret.ec2_app_secret.id
-  secret_string = jsonencode({
-    username = "ec2-user"
-    password = "random_password.app_password.result
-  })
-}
