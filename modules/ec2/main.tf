@@ -38,6 +38,7 @@ resource "aws_instance" "this"{
     vpc_security_group_ids = [aws_security_group.this.id]
     key_name =var.key_name
     tags = {
-        Name = "ec2-backend"
+        Name = "${var.name}-ec2"
     }
 }
+
