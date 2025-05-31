@@ -10,3 +10,4 @@ variable "subnet_ids" {
 variable "db_name" {
   default = "mydb"
 }
+variable "ec2_security_group_id"{}
