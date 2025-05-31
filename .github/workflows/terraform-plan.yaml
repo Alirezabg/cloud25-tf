@@ -4,12 +4,15 @@ on:
   push:
     branches:
       - '**'    
-      - '!main'     
+      - '!main' 
+      - '!destroy'    
   pull_request:
     branches:
       - '**'   
       - '!main'  
+      - '!destroy'
 jobs:
+  
   plan:
     name: Terraform Plan
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 
-name: Terraform Validate & Apply
+name: Terraform destroy
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: Validate, Plan & Apply
+    name: Terraform destroy
     runs-on: ubuntu-latest
     environment: production     
     concurrency:
@@ -47,4 +47,4 @@ jobs:
 
 
       - name: Terraform destroy
-        run: terraform destroy -auto-approve tfplan
+        run: terraform destroy -auto-approve
