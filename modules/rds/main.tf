@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "this"{
     name = "${var.identifier}-subnet-group"
-    subnet_ids = data.aws_subnets.default.ids
+    subnet_ids =  var.subnet_ids
     tags = {
     Name = "${var.identifier}-subnet-group"
   }
@@ -38,8 +38,8 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = false
 
-  username            = var.db_username
-  password            = var.db_password
+  username            = random_string.db_username.result
+  password            = random_password.db_password.result
   skip_final_snapshot = true
 
   tags = {
