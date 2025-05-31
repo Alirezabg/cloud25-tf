@@ -5,6 +5,7 @@ module "ec2_backend" {
   key_name          = var.key_name
   instance_type     = var.instance_type
   allowed_ssh_cidr  = var.allowed_ssh_cidr
+  name = "backend"
 }
 
 
