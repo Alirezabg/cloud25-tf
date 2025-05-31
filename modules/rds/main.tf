@@ -9,7 +9,7 @@ resource "aws_db_subnet_group" "this"{
 resource "aws_security_group" "rds" {
   name        = "${var.identifier}-sg"
   description = "Deny all public access to RDS"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id      = var.vpc_id
 
   # No ingress = no one can connect
   ingress = []
