@@ -7,5 +7,6 @@ module "rds_db" {
   instance_class     = "db.t2.micro"
   allocated_storage  = 20  
   vpc_id            = module.vpc.vpc_id
+  subnet_id         = module.vpc.subnet_ids[0] 
 
 }
